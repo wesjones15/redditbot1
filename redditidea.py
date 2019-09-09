@@ -1,9 +1,17 @@
 import praw
 
-client_id = 'AViZAd_JlI4BQA'
-client_secret = 'Rfln6LWhj2McideE6oxOGXx7ZBg'
-password = 'iamstarlord'
-user_agent = '/u/PaperGalaxyKey reddit bot test'
-username = 'PaperGalaxyKey'
+# user_agent = "/u/PaperGalaxyKey reddit bot test"
 
-reddit = praw.Reddit(client_id, client_secret, password, user_agent, username)
+# subreddit("AwakeSeeker887")
+
+reddit = praw.Reddit('bot1')
+for submission in reddit.subreddit("AwakeSeeker887").hot():
+    print("\tTitle:\t",submission.title)
+    if submission.title == "test post please ignore":
+        
+# for submission in reddit.front.hot(limit=5):
+#     print("\tTitle:\t",submission.title)
+#     # print(submission.body)
+#     if submission.is_self:
+#         print("selfpost")
+
