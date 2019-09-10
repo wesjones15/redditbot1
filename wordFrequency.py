@@ -1,7 +1,8 @@
 import re
 from operator import itemgetter
+import math
 # from PyDictionary import PyDictionary
-import nltk
+# import nltk
 # nltk.download('averaged_perceptron_tagger')
 # create function to parse each comment into array of words
 # remove all nonalphabetical characters from ends of words
@@ -46,17 +47,25 @@ def sortWordFreqList(word_freq_list):
 def filterOutCommonWords(word_freq_list):
     commonWords = [line.rstrip('\n') for line in open("commonWords.txt")]
     filtered_list = []
-    for word_pair in word_freq_list:
-        if not word_pair[0] in commonWords and word_pair[0] != "" and len(word_pair[0]) > 1:
-            filtered_list.append(word_pair)
-    # for word_pair in filtered_list:
-        # if word_pair[1] > 1:
-        # print(word_pair[0],"\t\t",word_pair[1])
-        # print(dictionary.meaning(word_pair[0]).keys(),"\n")
+    for word, freq in word_freq_list:
+        if not word in commonWords and word != "" and len(word) > 1:
+            # if freq > 2:
+            filtered_list.append([word, freq])
     return filtered_list
 
-
-
+def filterOutInfrequentWords(word_freq_list):
+    max_freq = word_freq_list[0][1]
+    min_freq = math.sqrt(max_freq)
+    
+    filtered_list = []
+    for word, freq in word_freq_list:
+        if (freq > min_freq):
+            filtered_list.append([word, freq])
+    num_words = len(filtered_list)      
+    # print("Returned Tags:  ", len(filtered_list))
+    return filtered_list
+    
+        
 
 if __name__ == '__main__':
     commentToWordList("rain: The sunniest, sir Trump: Looks like another sunny The sunniest, sir Trump Trump: Looks like another sunny The")
