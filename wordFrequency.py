@@ -1,29 +1,36 @@
 import re
 from operator import itemgetter
-
+# from PyDictionary import PyDictionary
+import nltk
+# nltk.download('averaged_perceptron_tagger')
 # create function to parse each comment into array of words
 # remove all nonalphabetical characters from ends of words
 # get frequency of each word and put into json object
 # return most used words
 # filter out posts with kid related tags
+# dictionary = PyDictionary()
+# if "Noun" in dictionary.meaning("dog").keys():
+#     print('dog')
+# print(dictionary.meaning("the"))
 
+def upperAndLowerBoundsWordLength(word_list):
+    filtered_word_list = []
+    for word in word_list:
+        if len(word) <= 12 and len(word) > 1:
+            filtered_word_list.append(word)
+    return filtered_word_list
+            
 
 def commentToWordList(body):
     body = re.sub(r'[^\w\s]', '', body).lower()
     word_list = body.split(" ")
+    word_list = upperAndLowerBoundsWordLength(word_list)
+    # print(nltk.pos_tag(word_list))
     return word_list
 
-def removeRareTags(word_dict):
-    new_word_dict = {}
-    for word in word_dict:
-        # print(word_dict[word])
-        if word_dict[word] > 1:
-            print(word, word_dict[word])
-            # new_word_dict.update(word)
-            
-    print(new_word_dict)
 # combine word_list for each comment into one large word list, then get frequency
 # filter out generic words(of, a , to, and, the, an)
+
 def wordListToWordFreq(word_list):
     big_list = [["",0]]
     for word in word_list:
@@ -34,21 +41,22 @@ def wordListToWordFreq(word_list):
     
 def sortWordFreqList(word_freq_list):
     word_freq_list.sort(key=itemgetter(1), reverse=True)
-    # print(word_freq_list)
     return word_freq_list
 
 def filterOutCommonWords(word_freq_list):
-    common_words = ["the", "i", "a", "of","to","is","in","like","and","this","that","on","do","it",""]
-    avoid_words = ["child","kid","human"]
-    good_words = ["dog","doggy"]
+    commonWords = [line.rstrip('\n') for line in open("commonWords.txt")]
+    filtered_list = []
     for word_pair in word_freq_list:
-        if word_pair[1] > 3:
-            print(word_pair[0],"\t\t",word_pair[1])
+        if not word_pair[0] in commonWords and word_pair[0] != "" and len(word_pair[0]) > 1:
+            filtered_list.append(word_pair)
+    # for word_pair in filtered_list:
+        # if word_pair[1] > 1:
+        # print(word_pair[0],"\t\t",word_pair[1])
+        # print(dictionary.meaning(word_pair[0]).keys(),"\n")
+    return filtered_list
 
-# def removeCommonWords(word_list):
-    
-#     for word in word_list:
-        
+
+
 
 if __name__ == '__main__':
     commentToWordList("rain: The sunniest, sir Trump: Looks like another sunny The sunniest, sir Trump Trump: Looks like another sunny The")

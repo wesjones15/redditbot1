@@ -38,9 +38,9 @@ if __name__ == '__main__':
         word_list_main.sort()
         word_freq_list = wordListToWordFreq(word_list_main)
         word_freq_list = sortWordFreqList(word_freq_list)
-        filterOutCommonWords(word_freq_list)
-        # for i in range(0, 3):
-        #     print(word_freq_list[i][0], word_freq_list[i][1])
+        word_freq_list = filterOutCommonWords(word_freq_list)
+        for i in word_freq_list:
+            print(i[0],"\t", i[1])
         # print(sorted(word_freq_list))
         # removeRareTags(word_freq_dict)
         # print(freq_dict)
